@@ -217,7 +217,7 @@
       <h1 class="text-4xl font-extrabold text-purple-700 flex items-center border-b pb-4 mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-3 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
+        </svg>
         Recent Sales
       </h1>
       <div id="recentSalesList" class="sales-history-scroll space-y-4">
@@ -317,7 +317,7 @@
   <script>
     // Client-side JavaScript for the POS system
     // YOU MUST REPLACE THIS WITH THE SINGLE WEB APP URL YOU GET AFTER DEPLOYING CODE.GS
-    const APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjv39MwNvTTpMP754p51Us3qUlZE7mL1-Fwczlb3NLXeyKPmwzvUD6Jr-fot4JDSJPPw/exec"; 
+    const APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxyNDq8oWX0JJOpIl5evhEXc07vpaEH0ML6MMQfyS5buNNSUL5uDKF8M0oeMMmD0IZng/exec"; 
 
     let inventoryData = {}; 
     let billItems = [];     
@@ -503,7 +503,7 @@
     function addCustomItemFromModal() {
       const customBookName = customBookNameInput.value.trim();
       const customRate = parseFloat(customRateInput.value);
-      const qty = parseInt(qtyInput.value); 
+      const qty = parseInt(qtyInput.value); // Quantity is still from main qty input
 
       if (!customBookName || customBookName === "") {
         showMessage("Custom product name cannot be empty.", "warning");
@@ -513,8 +513,8 @@
         showMessage("Please enter a valid rate for the custom product.", "warning");
         return;
       }
-      if (isNaN(qty) || qty <= 0) {
-        showMessage("Please enter a valid quantity for the custom product.", "warning");
+      if (isNaN(qty) || qty <= 0) { // Check quantity from main input
+        showMessage("Please enter a valid quantity for the custom product in the main quantity field.", "warning");
         return;
       }
 
@@ -653,6 +653,8 @@
       let newRate = itemToEdit.rate;
       let newQty = itemToEdit.qty;
 
+      // Use a custom modal for editing if you prefer, similar to addCustomItemModal
+      // For simplicity, sticking to prompt for now, as it's a quick way to edit.
       if (itemToEdit.isCustom) {
         newBookName = prompt("Edit Product Name:", itemToEdit.book) || itemToEdit.book;
         newRate = parseFloat(prompt("Edit Rate:", itemToEdit.rate)) || itemToEdit.rate;
@@ -729,6 +731,10 @@
       if (num >= 100000) { // Lakhs
         words += handleTens(Math.floor(num / 100000)) + " Lakh ";
         num %= 100000;
+      }
+      if (num >= 1000) { // Thousands
+        words += handleTens(Math.floor(num / 1000)) + " Thousand ";
+        num %= 1000;
       }
       if (num >= 100) { // Hundreds
         words += sglDigit[Math.floor(num / 100)] + " Hundred ";
